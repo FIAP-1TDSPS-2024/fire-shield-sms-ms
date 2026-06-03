@@ -26,8 +26,7 @@ public class Contato {
     private final String nome;
     private final String descricao;
     private final String numero;
-    private final String estadoSigla;
-    private final String estadoNome;
+    private final String estado;
 
     // -------------------------------------------------------------------------
     // Construtor privado – toda validação de invariantes fica aqui
@@ -37,15 +36,13 @@ public class Contato {
                     String nome,
                     String descricao,
                     String numero,
-                    String estadoSigla,
-                    String estadoNome) {
+                    String estado) {
 
         this.uuid       = Objects.requireNonNull(uuid, "uuid do contato é obrigatório");
         this.nome       = requireNotBlank(nome, "nome do contato é obrigatório");
         this.descricao  = descricao != null ? descricao.trim() : null;
         this.numero     = validarTelefone(numero);
-        this.estadoSigla = validarUf(estadoSigla);
-        this.estadoNome = requireNotBlank(estadoNome, "nome do estado é obrigatório");
+        this.estado     = requireNotBlank(estado, "O estado é obrigatório");
     }
 
     // -------------------------------------------------------------------------
@@ -55,18 +52,16 @@ public class Contato {
     public static Contato criarNovo(String nome,
                                     String descricao,
                                     String numero,
-                                    String estadoSigla,
-                                    String estadoNome) {
-        return new Contato(UUID.randomUUID(), nome, descricao, numero, estadoSigla, estadoNome);
+                                    String estado) {
+        return new Contato(UUID.randomUUID(), nome, descricao, numero, estado);
     }
 
     public static Contato reconstituir(UUID uuid,
                                        String nome,
                                        String descricao,
                                        String numero,
-                                       String estadoSigla,
-                                       String estadoNome) {
-        return new Contato(uuid, nome, descricao, numero, estadoSigla, estadoNome);
+                                       String estado) {
+        return new Contato(uuid, nome, descricao, numero, estado);
     }
 
     // -------------------------------------------------------------------------
@@ -88,13 +83,5 @@ public class Contato {
                     "número de telefone inválido: deve conter entre 10 e 15 dígitos");
         }
         return sanitizado;
-    }
-
-    private static String validarUf(String uf) {
-        String sigla = requireNotBlank(uf, "sigla do estado é obrigatória").toUpperCase();
-        if (sigla.length() != 2) {
-            throw new DomainValidationException("sigla do estado deve conter exatamente 2 caracteres");
-        }
-        return sigla;
     }
 }

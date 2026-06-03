@@ -14,8 +14,7 @@ public final class ContatoPersistenceMapper {
                 entity.getNome(),
                 entity.getDescricao(),
                 entity.getNumero(),
-                entity.getEstadoSigla(),
-                entity.getEstadoNome()
+                entity.getEstado()
         );
     }
 
@@ -25,8 +24,7 @@ public final class ContatoPersistenceMapper {
         entity.setNome(contato.getNome());
         entity.setDescricao(contato.getDescricao());
         entity.setNumero(contato.getNumero());
-        entity.setEstadoSigla(contato.getEstadoSigla());
-        entity.setEstadoNome(contato.getEstadoNome());
+        entity.setEstado(contato.getEstado());
         return entity;
     }
 }

@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface ContatoJpaRepository extends JpaRepository<ContatoJpaEntity, UUID> {
 
-    ContatoJpaEntity findByEstadoSigla(String estadoSigla);
+    ContatoJpaEntity findFirstByEstado(String estado);
 }

@@ -18,9 +18,9 @@ public class ContatoJpaAdapter implements ContatoRepository {
     }
 
     @Override
-    public Contato findContatoByUf(String estadoSigla) {
+    public Contato findFirstByEstado(String estado) {
         return ContatoPersistenceMapper
-                .toDomain(repository.findByEstadoSigla(estadoSigla.toUpperCase()));
+                .toDomain(repository.findFirstByEstado(estado));
     }
 }
 

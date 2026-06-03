@@ -29,10 +29,7 @@ public class ContatoJpaEntity {
     @Column(nullable = false, length = 20)
     private String numero;
 
-    @Column(name = "estado_sigla", nullable = false, length = 2)
-    private String estadoSigla;
-
-    @Column(name = "estado_nome", nullable = false, length = 80)
-    private String estadoNome;
+    @Column(name = "estado", nullable = false, length = 80)
+    private String estado;
 }
 
