@@ -11,14 +11,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "ocorrencia")
+@Table(name = "sms_ocorrencia")
 public class OcorrenciaJpaEntity {
 
     @Id
@@ -35,24 +35,20 @@ public class OcorrenciaJpaEntity {
     private SeveridadeOcorrenciaEnum severidade;
 
     @Column(name = "horario_deteccao", nullable = false)
-    private Instant horarioDeteccao;
+    private LocalDateTime horarioDeteccao;
 
-    @Column(nullable = false, length = 120)
+    @Column(length = 120)
     private String nome;
 
-    @Column(nullable = false, length = 80)
+    @Column(length = 80)
     private String bairro;
 
-    @Column(nullable = false, length = 80)
+    @Column(length = 80)
     private String cidade;
 
-    @Column(name = "estado_sigla", nullable = false, length = 2)
-    private String estadoSigla;
+    @Column(name = "estado", nullable = false, length = 100)
+    private String estado;
 
-    @Column(name = "estado_nome", nullable = false, length = 80)
-    private String estadoNome;
-
-    @Column(nullable = false, length = 8)
+    @Column(length = 9)
     private String cep;
 }
-

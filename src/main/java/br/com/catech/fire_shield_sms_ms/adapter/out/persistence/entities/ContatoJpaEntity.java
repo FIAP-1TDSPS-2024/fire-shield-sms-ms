@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "contato")
+@Table(name = "sms_contato")
 public class ContatoJpaEntity {
 
     @Id

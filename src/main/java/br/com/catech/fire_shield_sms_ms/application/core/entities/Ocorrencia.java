@@ -4,7 +4,7 @@ import br.com.catech.fire_shield_sms_ms.application.core.enums.SeveridadeOcorren
 import br.com.catech.fire_shield_sms_ms.application.core.exceptions.DomainValidationException;
 import lombok.Getter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,14 +27,13 @@ public class Ocorrencia {
     private final double latitude;
     private final double longitude;
     private final SeveridadeOcorrenciaEnum severidade;
-    private final Instant horarioDeteccao;
+    private final LocalDateTime horarioDeteccao;
 
-    // Endereço – do estado para baixo
+    // Endereço – campos opcionais (incêndios em área rural podem não tê-los)
     private final String nome;
     private final String bairro;
     private final String cidade;
-    private final String estadoSigla;
-    private final String estadoNome;
+    private final String estado;
     private final String cep;
 
     // -------------------------------------------------------------------------
@@ -45,12 +44,11 @@ public class Ocorrencia {
                        double latitude,
                        double longitude,
                        SeveridadeOcorrenciaEnum severidade,
-                       Instant horarioDeteccao,
+                       LocalDateTime horarioDeteccao,
                        String nome,
                        String bairro,
                        String cidade,
-                       String estadoSigla,
-                       String estadoNome,
+                       String estado,
                        String cep) {
 
         this.uuid            = Objects.requireNonNull(uuid, "uuid da ocorrência é obrigatório");
@@ -61,8 +59,7 @@ public class Ocorrencia {
         this.nome            = trimOrNull(nome);
         this.bairro          = trimOrNull(bairro);
         this.cidade          = trimOrNull(cidade);
-        this.estadoSigla     = validarUf(estadoSigla);
-        this.estadoNome      = requireNotBlank(estadoNome, "nome do estado é obrigatório");
+        this.estado          = requireNotBlank(estado, "estado é obrigatório");
         this.cep             = validarCep(cep);
     }
 
@@ -73,30 +70,28 @@ public class Ocorrencia {
     public static Ocorrencia criarNova(double latitude,
                                        double longitude,
                                        SeveridadeOcorrenciaEnum severidade,
-                                       Instant horarioDeteccao,
+                                       LocalDateTime horarioDeteccao,
                                        String nome,
                                        String bairro,
                                        String cidade,
-                                       String estadoSigla,
-                                       String estadoNome,
+                                       String estado,
                                        String cep) {
         return new Ocorrencia(UUID.randomUUID(), latitude, longitude, severidade,
-                horarioDeteccao, nome, bairro, cidade, estadoSigla, estadoNome, cep);
+                horarioDeteccao, nome, bairro, cidade, estado, cep);
     }
 
     public static Ocorrencia reconstituir(UUID uuid,
                                           double latitude,
                                           double longitude,
                                           SeveridadeOcorrenciaEnum severidade,
-                                          Instant horarioDeteccao,
+                                          LocalDateTime horarioDeteccao,
                                           String nome,
                                           String bairro,
                                           String cidade,
-                                          String estadoSigla,
-                                          String estadoNome,
+                                          String estado,
                                           String cep) {
         return new Ocorrencia(uuid, latitude, longitude, severidade,
-                horarioDeteccao, nome, bairro, cidade, estadoSigla, estadoNome, cep);
+                horarioDeteccao, nome, bairro, cidade, estado, cep);
     }
 
     // -------------------------------------------------------------------------
@@ -107,12 +102,12 @@ public class Ocorrencia {
     public String gerarMensagemAlerta() {
         StringBuilder sb = new StringBuilder();
         sb.append("🔥 ALERTA ").append(severidade)
-          .append(" | ").append(estadoSigla);
+          .append(" | ").append(estado);
 
-        if (cidade != null)  sb.append("/").append(cidade);
-        if (bairro != null)  sb.append(" | ").append(bairro);
-        if (nome   != null)  sb.append(", ").append(nome);
-        if (cep    != null)  sb.append(" | CEP ").append(cep);
+        if (cidade != null) sb.append("/").append(cidade);
+        if (bairro != null) sb.append(" | ").append(bairro);
+        if (nome   != null) sb.append(", ").append(nome);
+        if (cep    != null) sb.append(" | CEP ").append(cep);
 
         sb.append(" | Detectado: ").append(horarioDeteccao);
         return sb.toString();
@@ -152,30 +147,28 @@ public class Ocorrencia {
         return longitude;
     }
 
-    private static Instant validarHorario(Instant horario) {
+    private static LocalDateTime validarHorario(LocalDateTime horario) {
         Objects.requireNonNull(horario, "horário de detecção é obrigatório");
-        if (horario.isAfter(Instant.now().plusSeconds(60))) {
+        if (horario.isAfter(LocalDateTime.now().plusSeconds(60))) {
             throw new DomainValidationException("horário de detecção não pode estar no futuro");
         }
         return horario;
-    }
-
-    private static String validarUf(String uf) {
-        String sigla = requireNotBlank(uf, "sigla do estado é obrigatória").toUpperCase();
-        if (sigla.length() != 2) {
-            throw new DomainValidationException("sigla do estado deve conter exatamente 2 caracteres");
-        }
-        return sigla;
     }
 
     private static String validarCep(String cep) {
         if (cep == null || cep.isBlank()) {
             return null; // CEP é opcional
         }
-        String soDigitos = cep.replaceAll("\\D", "");
-        if (soDigitos.length() != 8) {
-            throw new DomainValidationException("CEP deve conter 8 dígitos, recebido: " + cep);
+        String trimmed = cep.trim();
+        // Aceita tanto "20020100" quanto "20020-100"
+        if (!trimmed.matches("\\d{5}-\\d{3}") && !trimmed.matches("\\d{8}")) {
+            throw new DomainValidationException(
+                    "CEP deve estar no formato XXXXX-XXX ou XXXXXXXX, recebido: " + cep);
         }
-        return soDigitos;
+        // Normaliza sempre para o formato com hífen: XXXXX-XXX
+        if (trimmed.length() == 8) {
+            trimmed = trimmed.substring(0, 5) + "-" + trimmed.substring(5);
+        }
+        return trimmed;
     }
 }

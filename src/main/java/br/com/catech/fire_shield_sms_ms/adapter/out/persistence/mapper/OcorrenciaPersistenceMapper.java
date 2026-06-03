@@ -18,8 +18,7 @@ public final class OcorrenciaPersistenceMapper {
                 entity.getNome(),
                 entity.getBairro(),
                 entity.getCidade(),
-                entity.getEstadoSigla(),
-                entity.getEstadoNome(),
+                entity.getEstado(),
                 entity.getCep()
         );
     }
@@ -34,10 +33,8 @@ public final class OcorrenciaPersistenceMapper {
         entity.setNome(ocorrencia.getNome());
         entity.setBairro(ocorrencia.getBairro());
         entity.setCidade(ocorrencia.getCidade());
-        entity.setEstadoSigla(ocorrencia.getEstadoSigla());
-        entity.setEstadoNome(ocorrencia.getEstadoNome());
+        entity.setEstado(ocorrencia.getEstado());
         entity.setCep(ocorrencia.getCep());
         return entity;
     }
 }
-

@@ -15,7 +15,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "sms")
+@Table(name = "sms_sms")
 public class SmsJpaEntity {
 
     @Id
