@@ -1,13 +1,11 @@
 package br.com.catech.fire_shield_sms_ms.adapter.out.persistence.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -31,5 +29,8 @@ public class ContatoJpaEntity {
 
     @Column(name = "estado", nullable = false, length = 80)
     private String estado;
+
+    @OneToMany(mappedBy = "contato")
+    private List<SmsJpaEntity> mensagens;
 }
 

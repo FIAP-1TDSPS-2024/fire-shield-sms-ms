@@ -14,8 +14,9 @@ public final class SmsPersistenceMapper {
                 entity.getNumeroOrigem(),
                 entity.getNumeroDestino(),
                 entity.getMensagem(),
-                entity.getDataEnvio()
-        );
+                entity.getDataEnvio(),
+                OcorrenciaPersistenceMapper.toDomain(entity.getOcorrencia()),
+                ContatoPersistenceMapper.toDomain(entity.getContato()));
     }
 
     public static SmsJpaEntity toEntity(Sms sms) {

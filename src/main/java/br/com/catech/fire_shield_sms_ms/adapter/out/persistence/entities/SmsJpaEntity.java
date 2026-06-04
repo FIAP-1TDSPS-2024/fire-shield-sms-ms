@@ -1,9 +1,6 @@
 package br.com.catech.fire_shield_sms_ms.adapter.out.persistence.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,5 +29,13 @@ public class SmsJpaEntity {
 
     @Column(name = "data_envio", nullable = false)
     private LocalDateTime dataEnvio;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uuid_ocorrencia", nullable = false)
+    private OcorrenciaJpaEntity ocorrencia;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uuid_contato", nullable = false)
+    private ContatoJpaEntity contato;
 }
 

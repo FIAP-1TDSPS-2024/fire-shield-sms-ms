@@ -31,6 +31,8 @@ public class Sms {
     private final String numeroDestino;
     private final String mensagem;
     private final LocalDateTime dataEnvio;
+    private final Ocorrencia ocorrencia;
+    private final Contato contato;
 
     // -------------------------------------------------------------------------
     // Construtor privado – toda validação de invariantes fica aqui
@@ -40,13 +42,15 @@ public class Sms {
                 String numeroOrigem,
                 String numeroDestino,
                 String mensagem,
-                LocalDateTime dataEnvio) {
+                LocalDateTime dataEnvio, Ocorrencia ocorrencia, Contato contato) {
 
         this.uuid           = Objects.requireNonNull(uuid, "uuid do SMS é obrigatório");
         this.numeroOrigem   = validarTelefone(numeroOrigem, "número de origem inválido");
         this.numeroDestino  = validarTelefone(numeroDestino, "número de destino inválido");
         this.mensagem       = validarMensagem(mensagem);
         this.dataEnvio      = Objects.requireNonNull(dataEnvio, "data de envio é obrigatória");
+        this.ocorrencia = ocorrencia;
+        this.contato = contato;
     }
 
     // -------------------------------------------------------------------------
@@ -56,16 +60,20 @@ public class Sms {
     public static Sms criarNovo(String numeroOrigem,
                                 String numeroDestino,
                                 String mensagem,
-                                LocalDateTime dataEnvio) {
-        return new Sms(UUID.randomUUID(), numeroOrigem, numeroDestino, mensagem, dataEnvio);
+                                LocalDateTime dataEnvio,
+                                Ocorrencia ocorrencia,
+                                Contato contato) {
+        return new Sms(UUID.randomUUID(), numeroOrigem, numeroDestino, mensagem, dataEnvio, ocorrencia, contato);
     }
 
     public static Sms reconstituir(UUID uuid,
                                    String numeroOrigem,
                                    String numeroDestino,
                                    String mensagem,
-                                   LocalDateTime dataEnvio) {
-        return new Sms(uuid, numeroOrigem, numeroDestino, mensagem, dataEnvio);
+                                   LocalDateTime dataEnvio,
+                                   Ocorrencia ocorrencia,
+                                   Contato contato) {
+        return new Sms(uuid, numeroOrigem, numeroDestino, mensagem, dataEnvio, ocorrencia, contato);
     }
 
     // -------------------------------------------------------------------------
