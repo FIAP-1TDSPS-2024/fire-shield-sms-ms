@@ -7,6 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ContatoJpaRepository extends JpaRepository<ContatoJpaEntity, UUID> {
-
     ContatoJpaEntity findFirstByEstado(String estado);
 }

@@ -98,21 +98,6 @@ public class Ocorrencia {
     // Comportamentos de domínio
     // -------------------------------------------------------------------------
 
-    /** Gera o corpo da mensagem SMS de alerta para esta ocorrência. */
-    public String gerarMensagemAlerta() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("🔥 ALERTA ").append(severidade)
-          .append(" | ").append(estado);
-
-        if (cidade != null) sb.append("/").append(cidade);
-        if (bairro != null) sb.append(" | ").append(bairro);
-        if (nome   != null) sb.append(", ").append(nome);
-        if (cep    != null) sb.append(" | CEP ").append(cep);
-
-        sb.append(" | Detectado: ").append(horarioDeteccao);
-        return sb.toString();
-    }
-
     public boolean isCritica() {
         return SeveridadeOcorrenciaEnum.CRITICO == severidade;
     }

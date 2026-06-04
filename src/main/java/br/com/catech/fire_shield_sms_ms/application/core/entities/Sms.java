@@ -51,16 +51,25 @@ public class Sms {
         this.contato = contato;
     }
 
+    public Sms(UUID uuid, String numeroDestino, String mensagem, Ocorrencia ocorrencia, Contato contato) {
+
+        this.uuid           = Objects.requireNonNull(uuid, "uuid do SMS é obrigatório");
+        this.numeroDestino  = validarTelefone(numeroDestino, "número de destino inválido");
+        this.mensagem       = validarMensagem(mensagem);
+        this.dataEnvio      = LocalDateTime.now();
+        this.ocorrencia = ocorrencia;
+        this.contato = contato;
+    }
+
     // -------------------------------------------------------------------------
     // Factory methods
     // -------------------------------------------------------------------------
 
     public static Sms criarNovo(String numeroDestino,
                                 String mensagem,
-                                LocalDateTime dataEnvio,
                                 Ocorrencia ocorrencia,
                                 Contato contato) {
-        return new Sms(UUID.randomUUID(), numeroDestino, mensagem, dataEnvio, ocorrencia, contato);
+        return new Sms(UUID.randomUUID(), numeroDestino, mensagem, ocorrencia, contato);
     }
 
     public static Sms reconstituir(UUID uuid,
@@ -70,6 +79,73 @@ public class Sms {
                                    Ocorrencia ocorrencia,
                                    Contato contato) {
         return new Sms(uuid, numeroDestino, mensagem, dataEnvio, ocorrencia, contato);
+    }
+
+    public static String criarMensagem(
+            Ocorrencia ocorrencia,
+            Contato contato) {
+
+        StringBuilder mensagem = new StringBuilder();
+
+        mensagem.append("ALERTA DE INCÊNDIO\n\n");
+
+        mensagem.append("Órgão responsável: ")
+                .append(contato.getNome())
+                .append("\n");
+
+        mensagem.append("Severidade: ")
+                .append(ocorrencia.getSeveridade())
+                .append("\n");
+
+        mensagem.append("Data/Hora da detecção: ")
+                .append(ocorrencia.getHorarioDeteccao())
+                .append("\n\n");
+
+        mensagem.append("Localização:\n");
+
+        if (possuiTexto(ocorrencia.getNome())) {
+            mensagem.append("- Referência: ")
+                    .append(ocorrencia.getNome())
+                    .append("\n");
+        }
+
+        if (possuiTexto(ocorrencia.getBairro())) {
+            mensagem.append("- Bairro: ")
+                    .append(ocorrencia.getBairro())
+                    .append("\n");
+        }
+
+        if (possuiTexto(ocorrencia.getCidade())) {
+            mensagem.append("- Cidade: ")
+                    .append(ocorrencia.getCidade())
+                    .append("\n");
+        }
+
+        mensagem.append("- Estado: ")
+                .append(ocorrencia.getEstado())
+                .append("\n");
+
+        if (possuiTexto(ocorrencia.getCep())) {
+            mensagem.append("- CEP: ")
+                    .append(ocorrencia.getCep())
+                    .append("\n");
+        }
+
+        mensagem.append("- Latitude: ")
+                .append(ocorrencia.getLatitude())
+                .append("\n");
+
+        mensagem.append("- Longitude: ")
+                .append(ocorrencia.getLongitude())
+                .append("\n");
+
+        mensagem.append("\nFavor verificar a ocorrência.");
+
+        return mensagem.toString();
+    }
+
+    private static boolean possuiTexto(String valor) {
+        return valor != null && !valor.isBlank();
     }
 
     // -------------------------------------------------------------------------
