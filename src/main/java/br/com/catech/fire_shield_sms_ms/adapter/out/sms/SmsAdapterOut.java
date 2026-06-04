@@ -18,7 +18,7 @@ public class SmsAdapterOut implements SmsPortOut {
     @Value("${SMS_TOKEN}")
     private String authToken;
 
-    @Value("${twilio.phone-number}")
+    @Value("${SMS_NUMERO}")
     private String phoneNumber;
 
     @PostConstruct

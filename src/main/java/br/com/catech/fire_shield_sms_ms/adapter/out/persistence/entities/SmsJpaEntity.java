@@ -1,6 +1,7 @@
 package br.com.catech.fire_shield_sms_ms.adapter.out.persistence.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "sms_sms")
 public class SmsJpaEntity {
@@ -18,7 +20,7 @@ public class SmsJpaEntity {
     @Id
     private UUID uuid;
 
-    @Column(name = "numero_destino", nullable = false, length = 20)
+    @Column(name = "numero", nullable = false, length = 20)
     private String numeroDestino;
 
     @Column(nullable = false, length = 500)

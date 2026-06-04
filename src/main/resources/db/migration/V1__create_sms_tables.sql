@@ -25,8 +25,7 @@ CREATE TABLE sms_ocorrencia (
 
 CREATE TABLE sms_sms (
                          uuid RAW(16) NOT NULL,
-                         numero_origem VARCHAR2(20) NOT NULL,
-                         numero_destino VARCHAR2(20) NOT NULL,
+                         numero VARCHAR2(20) NOT NULL,
                          mensagem VARCHAR2(500) NOT NULL,
                          data_envio TIMESTAMP NOT NULL,
                          uuid_ocorrencia RAW(16) NOT NULL,

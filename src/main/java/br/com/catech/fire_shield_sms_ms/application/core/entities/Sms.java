@@ -4,7 +4,9 @@ import br.com.catech.fire_shield_sms_ms.application.core.exceptions.DomainValida
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.text.Normalizer;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -25,7 +27,7 @@ import java.util.regex.Pattern;
 public class Sms {
 
     private static final Pattern PHONE_PATTERN = Pattern.compile("^\\+?\\d{10,15}$");
-    private static final int MENSAGEM_MAX_CHARS = 500;
+    private static final int MENSAGEM_MAX_CHARS = 300;
 
     private final UUID uuid;
     private final String numeroDestino;
@@ -85,11 +87,14 @@ public class Sms {
             Ocorrencia ocorrencia,
             Contato contato) {
 
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
         StringBuilder mensagem = new StringBuilder();
 
-        mensagem.append("ALERTA DE INCÊNDIO\n\n");
+        mensagem.append("ALERTA DE INCENDIO\n");
 
-        mensagem.append("Órgão responsável: ")
+        mensagem.append("Orgao: ")
                 .append(contato.getNome())
                 .append("\n");
 
@@ -97,51 +102,51 @@ public class Sms {
                 .append(ocorrencia.getSeveridade())
                 .append("\n");
 
-        mensagem.append("Data/Hora da detecção: ")
-                .append(ocorrencia.getHorarioDeteccao())
-                .append("\n\n");
-
-        mensagem.append("Localização:\n");
+        mensagem.append("Data/Hora: ")
+                .append(ocorrencia.getHorarioDeteccao().format(formatter))
+                .append("\n");
 
         if (possuiTexto(ocorrencia.getNome())) {
-            mensagem.append("- Referência: ")
+            mensagem.append("Local: ")
                     .append(ocorrencia.getNome())
                     .append("\n");
         }
 
         if (possuiTexto(ocorrencia.getBairro())) {
-            mensagem.append("- Bairro: ")
+            mensagem.append("Bairro: ")
                     .append(ocorrencia.getBairro())
                     .append("\n");
         }
 
         if (possuiTexto(ocorrencia.getCidade())) {
-            mensagem.append("- Cidade: ")
+            mensagem.append("Cidade: ")
                     .append(ocorrencia.getCidade())
                     .append("\n");
         }
 
-        mensagem.append("- Estado: ")
+        mensagem.append("Estado: ")
                 .append(ocorrencia.getEstado())
                 .append("\n");
 
         if (possuiTexto(ocorrencia.getCep())) {
-            mensagem.append("- CEP: ")
+            mensagem.append("CEP: ")
                     .append(ocorrencia.getCep())
                     .append("\n");
         }
 
-        mensagem.append("- Latitude: ")
+        mensagem.append("Lat: ")
                 .append(ocorrencia.getLatitude())
                 .append("\n");
 
-        mensagem.append("- Longitude: ")
-                .append(ocorrencia.getLongitude())
-                .append("\n");
+        mensagem.append("Lon: ")
+                .append(ocorrencia.getLongitude());
 
-        mensagem.append("\nFavor verificar a ocorrência.");
+        return removerAcentos(mensagem.toString());
+    }
 
-        return mensagem.toString();
+    private static String removerAcentos(String texto) {
+        return Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
     }
 
     private static boolean possuiTexto(String valor) {

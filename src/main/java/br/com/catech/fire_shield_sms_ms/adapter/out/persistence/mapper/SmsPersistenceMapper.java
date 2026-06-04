@@ -19,12 +19,13 @@ public final class SmsPersistenceMapper {
     }
 
     public static SmsJpaEntity toEntity(Sms sms) {
-        SmsJpaEntity entity = new SmsJpaEntity();
-        entity.setUuid(sms.getUuid());
-        entity.setNumeroDestino(sms.getNumeroDestino());
-        entity.setMensagem(sms.getMensagem());
-        entity.setDataEnvio(sms.getDataEnvio());
-        return entity;
+        return new SmsJpaEntity(
+                sms.getUuid(),
+                sms.getNumeroDestino(),
+                sms.getMensagem(),
+                sms.getDataEnvio(),
+                OcorrenciaPersistenceMapper.toEntity(sms.getOcorrencia()),
+                ContatoPersistenceMapper.toEntity(sms.getContato()));
     }
 }
 
