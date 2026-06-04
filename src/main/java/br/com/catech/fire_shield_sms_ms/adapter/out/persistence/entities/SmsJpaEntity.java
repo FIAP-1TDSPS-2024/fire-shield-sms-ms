@@ -18,9 +18,6 @@ public class SmsJpaEntity {
     @Id
     private UUID uuid;
 
-    @Column(name = "numero_origem", nullable = false, length = 20)
-    private String numeroOrigem;
-
     @Column(name = "numero_destino", nullable = false, length = 20)
     private String numeroDestino;
 

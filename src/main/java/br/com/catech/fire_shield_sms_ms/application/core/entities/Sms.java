@@ -2,6 +2,7 @@ package br.com.catech.fire_shield_sms_ms.application.core.entities;
 
 import br.com.catech.fire_shield_sms_ms.application.core.exceptions.DomainValidationException;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -27,7 +28,6 @@ public class Sms {
     private static final int MENSAGEM_MAX_CHARS = 500;
 
     private final UUID uuid;
-    private final String numeroOrigem;
     private final String numeroDestino;
     private final String mensagem;
     private final LocalDateTime dataEnvio;
@@ -39,13 +39,11 @@ public class Sms {
     // -------------------------------------------------------------------------
 
     private Sms(UUID uuid,
-                String numeroOrigem,
                 String numeroDestino,
                 String mensagem,
                 LocalDateTime dataEnvio, Ocorrencia ocorrencia, Contato contato) {
 
         this.uuid           = Objects.requireNonNull(uuid, "uuid do SMS é obrigatório");
-        this.numeroOrigem   = validarTelefone(numeroOrigem, "número de origem inválido");
         this.numeroDestino  = validarTelefone(numeroDestino, "número de destino inválido");
         this.mensagem       = validarMensagem(mensagem);
         this.dataEnvio      = Objects.requireNonNull(dataEnvio, "data de envio é obrigatória");
@@ -57,23 +55,21 @@ public class Sms {
     // Factory methods
     // -------------------------------------------------------------------------
 
-    public static Sms criarNovo(String numeroOrigem,
-                                String numeroDestino,
+    public static Sms criarNovo(String numeroDestino,
                                 String mensagem,
                                 LocalDateTime dataEnvio,
                                 Ocorrencia ocorrencia,
                                 Contato contato) {
-        return new Sms(UUID.randomUUID(), numeroOrigem, numeroDestino, mensagem, dataEnvio, ocorrencia, contato);
+        return new Sms(UUID.randomUUID(), numeroDestino, mensagem, dataEnvio, ocorrencia, contato);
     }
 
     public static Sms reconstituir(UUID uuid,
-                                   String numeroOrigem,
                                    String numeroDestino,
                                    String mensagem,
                                    LocalDateTime dataEnvio,
                                    Ocorrencia ocorrencia,
                                    Contato contato) {
-        return new Sms(uuid, numeroOrigem, numeroDestino, mensagem, dataEnvio, ocorrencia, contato);
+        return new Sms(uuid, numeroDestino, mensagem, dataEnvio, ocorrencia, contato);
     }
 
     // -------------------------------------------------------------------------

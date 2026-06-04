@@ -11,7 +11,6 @@ public final class SmsPersistenceMapper {
     public static Sms toDomain(SmsJpaEntity entity) {
         return Sms.reconstituir(
                 entity.getUuid(),
-                entity.getNumeroOrigem(),
                 entity.getNumeroDestino(),
                 entity.getMensagem(),
                 entity.getDataEnvio(),
@@ -22,7 +21,6 @@ public final class SmsPersistenceMapper {
     public static SmsJpaEntity toEntity(Sms sms) {
         SmsJpaEntity entity = new SmsJpaEntity();
         entity.setUuid(sms.getUuid());
-        entity.setNumeroOrigem(sms.getNumeroOrigem());
         entity.setNumeroDestino(sms.getNumeroDestino());
         entity.setMensagem(sms.getMensagem());
         entity.setDataEnvio(sms.getDataEnvio());
