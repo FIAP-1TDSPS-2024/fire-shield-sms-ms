@@ -1,6 +1,7 @@
 package br.com.catech.fire_shield_sms_ms.adapter.in.web.config;
 
 import br.com.catech.fire_shield_sms_ms.adapter.in.web.dto.ErrorResponse;
+import br.com.catech.fire_shield_sms_ms.application.core.exceptions.AuthenticationFailedException;
 import br.com.catech.fire_shield_sms_ms.application.core.exceptions.DomainValidationException;
 import br.com.catech.fire_shield_sms_ms.application.core.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -31,4 +32,13 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationFailed(AuthenticationFailedException exception) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ErrorResponse.of(
+                        HttpStatus.UNAUTHORIZED.value(),
+                        HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                        exception.getMessage()
+                ));
+    }
 }
