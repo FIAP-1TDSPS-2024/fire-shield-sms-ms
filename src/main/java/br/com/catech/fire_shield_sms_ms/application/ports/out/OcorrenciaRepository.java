@@ -7,4 +7,5 @@ import java.util.List;
 public interface OcorrenciaRepository {
 
     void save(Ocorrencia ocorrencia);
+    List<Ocorrencia> listAll();
 }

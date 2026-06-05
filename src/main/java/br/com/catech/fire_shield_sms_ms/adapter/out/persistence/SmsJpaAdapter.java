@@ -6,6 +6,8 @@ import br.com.catech.fire_shield_sms_ms.application.core.entities.Sms;
 import br.com.catech.fire_shield_sms_ms.application.ports.out.SmsRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 public class SmsJpaAdapter implements SmsRepository {
 
     private final SmsJpaRepository repository;
@@ -17,6 +19,14 @@ public class SmsJpaAdapter implements SmsRepository {
     @Override
     public void save(Sms sms) {
         repository.save(SmsPersistenceMapper.toEntity(sms));
+    }
+
+    @Override
+    public List<Sms> listAll() {
+        return repository.findAll()
+                .stream()
+                .map(SmsPersistenceMapper::toDomain)
+                .toList();
     }
 }
 
