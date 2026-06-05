@@ -9,6 +9,10 @@ public final class ContatoPersistenceMapper {
     }
 
     public static Contato toDomain(ContatoJpaEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         return Contato.reconstituir(
                 entity.getUuid(),
                 entity.getNome(),
