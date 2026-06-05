@@ -6,7 +6,6 @@ import br.com.catech.fire_shield_sms_ms.application.core.entities.Sms;
 import br.com.catech.fire_shield_sms_ms.application.ports.out.SmsRepository;
 import org.springframework.stereotype.Component;
 
-@Component
 public class SmsJpaAdapter implements SmsRepository {
 
     private final SmsJpaRepository repository;

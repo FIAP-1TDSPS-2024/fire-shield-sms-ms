@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
  * Não possui {@code @RabbitListener} — o disparo fica em {@code OcorrenciaListenerAdapter}.
  */
 @Slf4j
-@Component
 public class OcorrenciaConsumerAdapter implements OcorrenciaConsumer {
 
     private final ObjectMapper objectMapper;

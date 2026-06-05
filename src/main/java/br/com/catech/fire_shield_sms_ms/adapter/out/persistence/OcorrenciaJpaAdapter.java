@@ -6,7 +6,6 @@ import br.com.catech.fire_shield_sms_ms.application.core.entities.Ocorrencia;
 import br.com.catech.fire_shield_sms_ms.application.ports.out.OcorrenciaRepository;
 import org.springframework.stereotype.Component;
 
-@Component
 public class OcorrenciaJpaAdapter implements OcorrenciaRepository {
 
     private final OcorrenciaJpaRepository repository;

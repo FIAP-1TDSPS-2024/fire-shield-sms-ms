@@ -6,7 +6,6 @@ import br.com.catech.fire_shield_sms_ms.application.ports.in.ProcessarOcorrencia
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
 
 /**
  * Adapter de entrada (messaging).
@@ -22,14 +21,13 @@ import org.springframework.stereotype.Component;
  * O UseCase não deve saber que existe JSON, RabbitMQ ou qualquer protocolo de transporte.
  */
 @Slf4j
-@Component
-public class OcorrenciaListenerAdapter {
+public class OcorrenciaListener {
 
     private final ProcessarOcorrenciaUseCase processarOcorrenciaUseCase;
     private final ObjectMapper objectMapper;
 
-    public OcorrenciaListenerAdapter(ProcessarOcorrenciaUseCase processarOcorrenciaUseCase,
-                                     ObjectMapper objectMapper) {
+    public OcorrenciaListener(ProcessarOcorrenciaUseCase processarOcorrenciaUseCase,
+                              ObjectMapper objectMapper) {
         this.processarOcorrenciaUseCase = processarOcorrenciaUseCase;
         this.objectMapper = objectMapper;
     }
